@@ -166,7 +166,7 @@ def start_order():
     timestamp = int(time.time()*1000)
     initiator = request.values['nick_name']
     md5_obj = hashlib.md5()
-    md5_obj.update("{0}-{1}".format(timestamp, initiator))
+    md5_obj.update("{0}-{1}".format(timestamp, initiator.encode("utf8")))
     vote_id = md5_obj.hexdigest()
     deadline = timestamp + 30 * 60 * 1000
     items = {}
