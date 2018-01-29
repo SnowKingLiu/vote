@@ -96,11 +96,14 @@ def get_vote_info():
     for i in range(len(items_json)):
         total = len(user_info[vote_id])
         choice_num = 0
-        choice_user_info = []
+        # choice_user_info = []
+        user_avatar_url = []
         for nickname, choice_info in user_info[vote_id].items():
             if str(choice_info['choice']) == str(i):
                 choice_num += 1
-                choice_user_info.append([nickname, choice_info['avatar_url']])
+                # choice_user_info.append([nickname, choice_info['avatar_url']])
+                if len(user_avatar_url) <= 9:
+                    user_avatar_url.append(choice_info['avatar_url'])
 
         if total == 0:
             present = 0
@@ -112,7 +115,8 @@ def get_vote_info():
             "item_name": items_json[str(i)],
             "img_id": i % 5,
             "present": present,
-            "choice_user_info": choice_user_info,
+            # "choice_user_info": choice_user_info,
+            "user_avatar_url": user_avatar_url
         })
 
     res = {
