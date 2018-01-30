@@ -15,8 +15,11 @@ user_info = {}
 # context.use_privatekey_file('/root/snowkingliu.com/Nginx/2_snowkingliu.com.key')
 # context.use_certificate_file('/root/snowkingliu.com/Nginx/1_snowkingliu.com_bundle.crt')
 
-context = ('/Users/xuejun/snowkingliu.com/Nginx/1_snowkingliu.com_bundle.crt',
-           '/Users/xuejun/snowkingliu.com/Nginx/2_snowkingliu.com.key')
+# context = ('/Users/xuejun/snowkingliu.com/Nginx/1_snowkingliu.com_bundle.crt',
+#            '/Users/xuejun/snowkingliu.com/Nginx/2_snowkingliu.com.key')
+
+context = ('/root/snowkingliu.com/Nginx/1_snowkingliu.com_bundle.crt',
+           '/root/snowkingliu.com/Nginx/2_snowkingliu.com.key')
 
 # context.use_privatekey_file('/Users/xuejun/snowkingliu.com/Nginx/2_snowkingliu.com.key')
 # context.use_certificate_file('/Users/xuejun/snowkingliu.com/Nginx/1_snowkingliu.com_bundle.crt')
