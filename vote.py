@@ -3,12 +3,23 @@
 # 2018/1/24 下午8:28
 
 from flask import Flask, jsonify, json, g, request
+from OpenSSL import SSL
 import time
 import hashlib
 
 app = Flask(__name__)
 vote_info = []
 user_info = {}
+
+# context = SSL.Context(SSL.SSLv23_METHOD)
+# context.use_privatekey_file('/root/snowkingliu.com/Nginx/2_snowkingliu.com.key')
+# context.use_certificate_file('/root/snowkingliu.com/Nginx/1_snowkingliu.com_bundle.crt')
+
+context = ('/Users/xuejun/snowkingliu.com/Nginx/1_snowkingliu.com_bundle.crt',
+           '/Users/xuejun/snowkingliu.com/Nginx/2_snowkingliu.com.key')
+
+# context.use_privatekey_file('/Users/xuejun/snowkingliu.com/Nginx/2_snowkingliu.com.key')
+# context.use_certificate_file('/Users/xuejun/snowkingliu.com/Nginx/1_snowkingliu.com_bundle.crt')
 
 
 @app.before_request
@@ -199,8 +210,8 @@ def load_file_data():
     fp.close()
 
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8000, ssl_context='adhoc')
+# if __name__ == '__main__':
+#     app.run(host='0.0.0.0', port=8000, ssl_context=context)
 
 
 
