@@ -2,7 +2,7 @@
 # by:Snowkingliu
 # 2018/1/24 下午8:28
 
-from flask import Flask, jsonify, json, g, request
+from flask import Flask, jsonify, json, g, request, render_template
 from OpenSSL import SSL
 import time
 import hashlib
@@ -18,8 +18,8 @@ user_info = {}
 # context = ('/Users/xuejun/snowkingliu.com/Nginx/1_snowkingliu.com_bundle.crt',
 #            '/Users/xuejun/snowkingliu.com/Nginx/2_snowkingliu.com.key')
 
-context = ('/root/snowkingliu.com/Nginx/1_snowkingliu.com_bundle.crt',
-           '/root/snowkingliu.com/Nginx/2_snowkingliu.com.key')
+# context = ('/root/snowkingliu.com/Nginx/1_snowkingliu.com_bundle.crt',
+#            '/root/snowkingliu.com/Nginx/2_snowkingliu.com.key')
 
 # context.use_privatekey_file('/Users/xuejun/snowkingliu.com/Nginx/2_snowkingliu.com.key')
 # context.use_certificate_file('/Users/xuejun/snowkingliu.com/Nginx/1_snowkingliu.com_bundle.crt')
@@ -201,6 +201,11 @@ def start_order():
     fp.writelines(json.dumps(user_info))
     fp.close()
     return jsonify({"success": True})
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
 
 
 def load_file_data():
