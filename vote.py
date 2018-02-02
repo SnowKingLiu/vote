@@ -6,10 +6,15 @@ from flask import Flask, jsonify, json, g, request, render_template
 from OpenSSL import SSL
 import time
 import hashlib
+import numpy as np
 
 app = Flask(__name__)
 vote_info = []
 user_info = {}
+
+asking_report = []
+asking_user_info = []
+asking_lock = True
 
 # context = SSL.Context(SSL.SSLv23_METHOD)
 # context.use_privatekey_file('/root/snowkingliu.com/Nginx/2_snowkingliu.com.key')
@@ -29,17 +34,6 @@ user_info = {}
 def before_request():
     if not vote_info:
         load_file_data()
-
-
-# # 已废弃
-# @app.route('/vote/api/get_today_list')
-# def get_today_list():
-#     # 查找当前有效的订单
-#     last_vote = vote_info[len(vote_info) - 1]
-#     if last_vote["deadline"] > time.time() * 1000:
-#         return jsonify({"vote_info": last_vote, "user_info": user_info[str(last_vote["vote_id"])]})
-#     else:
-#         return jsonify({"vote_info": [], "user_info": {}})
 
 
 @app.route('/vote/api/get_vote_list')
@@ -203,13 +197,105 @@ def start_order():
     return jsonify({"success": True})
 
 
+@app.route('/asking/api/report')
+def get_asking_report():
+    global asking_lock, asking_report
+    # 加锁
+    while not asking_lock:
+        pass
+    asking_lock = False
+    data_len = len(asking_report)
+    res = {
+        "data": []
+    }
+
+    if data_len <= len(asking_user_info):
+        report_np = np.array(asking_report)
+        report_user = asking_user_info[: data_len]
+        # 释放
+        asking_lock = True
+        # 按行相加
+        for i in range(data_len):
+            lable_number = np.sum(report_np, axis=1).argsort()[::-1][i]
+            res['data'].append({
+                "user": report_user[lable_number]["user"],
+                "avatar_url": report_user[lable_number]["avatar_url"],
+                "score": np.sum(report_np, axis=1)[lable_number]
+                }
+            )
+    else:
+        # 释放
+        asking_lock = True
+    return jsonify(res)
+
+
+@app.route('/asking/api/get_done')
+def get_asking_done():
+    user = request.values['user']
+    i = 0
+    for a_asking_user_info in asking_user_info:
+        if str(a_asking_user_info['user']) == str(user):
+            score = sum(asking_report[i])
+            return jsonify({"done": True, "score": score})
+        i += 1
+    return jsonify({"done": False})
+
+
+@app.route('/asking/api/get_questions')
+def get_questions():
+    user = request.values['user']
+    for a_asking_user_info in asking_user_info:
+        if a_asking_user_info['user'] == user:
+            return jsonify({"enable": False})
+    fp = open("questions.txt", mode="rb")
+    questions = json.loads(fp.readlines()[0])
+    fp.close()
+    return jsonify({"questions": questions, "enable": True})
+
+
+@app.route('/asking/api/send_questions')
+def send_questions():
+    user = request.values['user']
+    answers = np.array(request.values['answers'].split(','))
+    avatar_url = request.values['avatar_url']
+
+    fp = open("model_answers.txt", mode="rb")
+    model_answers = json.loads(fp.readlines()[0])
+    fp.close()
+
+    if len(model_answers) != len(answers):
+        return jsonify({"success": False})
+
+    my_asking_user_info = {
+        "user": user,
+        "avatar_url": avatar_url,
+    }
+    my_asking_report = np.zeros(len(answers))
+    asking_user_info.append(my_asking_user_info)
+    for i in range(len(model_answers)):
+        # 若为正确答案
+        if str(model_answers[i]) == str(answers[i]):
+            my_asking_report[i] = 1
+
+    fp = open("asking_user_info.txt", mode="w")
+    fp.writelines(json.dumps(asking_user_info))
+    fp.close()
+
+    asking_report.append([int(item) for item in my_asking_report.tolist()])
+    fp = open("asking_report.txt", mode="w")
+    fp.writelines(json.dumps(asking_report))
+    fp.close()
+
+    return jsonify({"success": True})
+
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
 
 
 def load_file_data():
-    global vote_info, user_info
+    global vote_info, user_info, asking_report, asking_user_info
     fp = open("vote_info.txt", mode="rb")
     vote_info = json.loads(fp.readlines()[0])
     fp.close()
@@ -217,9 +303,16 @@ def load_file_data():
     user_info = json.loads(fp.readlines()[0])
     fp.close()
 
+    fp = open("asking_report.txt", mode="rb")
+    asking_report = json.loads(fp.readlines()[0])
+    fp.close()
+    fp = open("asking_user_info.txt", mode="rb")
+    asking_user_info = json.loads(fp.readlines()[0])
+    fp.close()
 
-# if __name__ == '__main__':
-#     app.run(host='0.0.0.0', port=8000)
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8000)
 
 
 
