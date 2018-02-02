@@ -8,13 +8,13 @@ asking_report = [
     # [0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     # [1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     # [1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0]
-    [1, 1],
-    [0, 2]
+    # [1, 1],
+    # [0, 2]s
 ]
 
 asking_user_info = [
-    {"user": "Mellon0", "avatar_url": "https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83eqY2Z0bpmlYeGNZKq4nB7MowHHiciba6H6aiarWbJkBtbjgcncOLIfXI2ve7fuga0Gfoib54hGb8hYib8A/0"},
-    {"user": "Mellon1", "avatar_url": "https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83eqY2Z0bpmlYeGNZKq4nB7MowHHiciba6H6aiarWbJkBtbjgcncOLIfXI2ve7fuga0Gfoib54hGb8hYib8A/0"}
+    # {"user": "Mellon0", "avatar_url": "https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83eqY2Z0bpmlYeGNZKq4nB7MowHHiciba6H6aiarWbJkBtbjgcncOLIfXI2ve7fuga0Gfoib54hGb8hYib8A/0"},
+    # {"user": "Mellon1", "avatar_url": "https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83eqY2Z0bpmlYeGNZKq4nB7MowHHiciba6H6aiarWbJkBtbjgcncOLIfXI2ve7fuga0Gfoib54hGb8hYib8A/0"}
                        # {"user": "Mellon0", "avatar_url": "https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83eqY2Z0bpmlYeGNZKq4nB7MowHHiciba6H6aiarWbJkBtbjgcncOLIfXI2ve7fuga0Gfoib54hGb8hYib8A/0"},
                        # {"user": "Mellon1", "avatar_url": "https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83eqY2Z0bpmlYeGNZKq4nB7MowHHiciba6H6aiarWbJkBtbjgcncOLIfXI2ve7fuga0Gfoib54hGb8hYib8A/0"},
                        # {"user": "Mellon2", "avatar_url": "https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83eqY2Z0bpmlYeGNZKq4nB7MowHHiciba6H6aiarWbJkBtbjgcncOLIfXI2ve7fuga0Gfoib54hGb8hYib8A/0"},
